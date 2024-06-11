@@ -2,28 +2,29 @@ import json
 from kafka import KafkaConsumer
 from kafka import KafkaProducer
 import requests
-import datetime
+from config import api_key, current_date
 
-# Lấy thời gian hiện tại
-now = datetime.datetime.now()
-current_day = now.day
-current_month = now.month
-current_year = now.year
-print(f'match_detail_{current_year}_{current_month}_{current_day}')
-api_key = "RGAPI-c411c885-50e8-4cd2-84b6-a696859edc24"
-#consumer và producer
+print(f"match_detail_{current_date}")
+
+# consumer và producer
 consumer = KafkaConsumer(
-    f'match_id_{current_year}_{current_month}_{current_day}',  # Tên topic
-    bootstrap_servers='localhost:9092',  # Địa chỉ của Kafka broker
+    f"match_id_{current_date}",  # Tên topic
+    bootstrap_servers="localhost:9092",  # Địa chỉ của Kafka broker
     enable_auto_commit=True,
     auto_commit_interval_ms=300,
-    auto_offset_reset='earliest',  # Bắt đầu đọc từ đầu nếu không tìm thấy offset
-    group_id=f'match_detail_{current_year}_{current_month}_{current_day}',  # ID nhóm cho consumer
-    value_deserializer=lambda m: json.loads(m.decode('utf-8'))  # Deserializer cho dữ liệu JSON
+    auto_offset_reset="earliest",  # Bắt đầu đọc từ đầu nếu không tìm thấy offset
+    group_id=f"match_detail_{current_date}",  # ID nhóm cho consumer
+    value_deserializer=lambda m: json.loads(
+        m.decode("utf-8")
+    ),  # Deserializer cho dữ liệu JSON
 )
 
-producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+producer = KafkaProducer(
+    bootstrap_servers="localhost:9092",
+    value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+)
 
+total = 0
 for message in consumer:
     match_ids = message.value
     for match_id in match_ids:
@@ -31,11 +32,13 @@ for message in consumer:
         response = requests.get(url)
         if response.status_code == 200:
             match_detail = response.json()
-            producer.send(f'match_detail_{current_year}_{current_month}_{current_day}', match_detail)
-            print(f"Got match detail of {match_id}")
+            total += 1
+            producer.send(f"match_detail_{current_date}", match_detail)
+            print(f"Got match detail of {match_id}. Total n.o match detail: {total}")
         else:
             print(f"Error with {match_id}: Status code {response.status_code}")
-
+            producer.send(f"match_id_{current_date}", [match_id])
+            print(f"Reproduced {match_id}")
 
 producer.close()
 consumer.close()

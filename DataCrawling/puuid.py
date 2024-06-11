@@ -25,7 +25,7 @@ for message in consumer:
     # In thông tin ra màn hình hoặc xử lý theo yêu cầu
     print(f"Riot Name: {riot_name}, Riot Tagline: {riot_tagline}")
 
-    url = f"https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-sid/{riot_name}/{riot_tagline}?api_key={api_key}"
+    url = f"https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{riot_name}/{riot_tagline}?api_key={api_key}"
     response = requests.get(url)
     if response.status_code == 200:
         summoner_data = response.json()

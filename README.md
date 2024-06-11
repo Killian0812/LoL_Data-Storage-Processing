@@ -1,4 +1,4 @@
-# Data crawling
+# Data collecting
 Cài đặt Kafka: https://www.conduktor.io/kafka/how-to-start-kafka-using-docker/
 
 1. page.py\
