@@ -22,7 +22,6 @@ for message in consumer:
     # Decode message từ binary thành chuỗi
     riot_id = message.value.decode('utf-8')
     riot_name, riot_tagline = riot_id.rsplit("#", 1)
-    # In thông tin ra màn hình hoặc xử lý theo yêu cầu
     print(f"Riot Name: {riot_name}, Riot Tagline: {riot_tagline}")
 
     url = f"https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{riot_name}/{riot_tagline}?api_key={api_key}"
@@ -34,7 +33,7 @@ for message in consumer:
         puuid = summoner_data.get('puuid', '')
         producer.send(f'puuid_{current_date}', f'{puuid}'.encode())
         producer.flush()
-        print(f"Got {riot_name}, {riot_tagline}, {puuid}")
+        print(f"Got puuid of {riot_name}: {puuid}")
 
     else:
         print(f"Error with {riot_name}, {riot_tagline}: Status code {response.status_code}")

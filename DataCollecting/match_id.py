@@ -16,24 +16,23 @@ consumer = KafkaConsumer(
     group_id=f"match_id_{current_date}",  # ID nhóm cho consumer
 )
 
-producer = KafkaProducer(
-    bootstrap_servers="localhost:9092",
-    value_serializer=lambda v: json.dumps(v).encode("utf-8"),
-)
+producer = KafkaProducer(bootstrap_servers="localhost:9092")
 
 total = 0
 for message in consumer:
     puuid = message.value.decode("utf-8")
-    url = f"https://sea.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=1&count=4&api_key={api_key}"
+
+    url = f"https://sea.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=5&api_key={api_key}"
     response = requests.get(url)
     if response.status_code == 200:
         match_ids = response.json()
+        print(match_ids)
         total += len(match_ids)
-        producer.send(f"match_id_{current_date}", match_ids)
+        producer.send(f"match_id_{current_date}", f"{match_ids}".encode())
         print(f"Got match ids of {puuid}. Total n.o match id: {total}")
     else:
         print(f"Error with {puuid}: Status code {response.status_code}")
-        producer.send(f"puuid_{current_date}", message)
+        producer.send(f"puuid_{current_date}", f"{puuid}".encode())
         print(f"Reproduced {puuid}")
 
 producer.close()

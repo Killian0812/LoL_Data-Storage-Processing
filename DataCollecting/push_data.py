@@ -13,7 +13,7 @@ mydb = client["LOL_data"]
 # Chọn hoặc tạo collection
 mycol = mydb["test"]
 
-consumer = KafkaConsumer(
+consumerWithDeserializer = KafkaConsumer(
     f"match_detail_{current_date}",  # Tên topic
     bootstrap_servers="localhost:9092",  # Địa chỉ của Kafka broker
     enable_auto_commit=True,
@@ -27,7 +27,7 @@ consumer = KafkaConsumer(
 
 # Đẩy dữ liệu lên collection
 total = 0
-for message in consumer:
+for message in consumerWithDeserializer:
     match_detail = message.value
     mycol.insert_one(match_detail)
     total += 1
