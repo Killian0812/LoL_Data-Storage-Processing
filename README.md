@@ -31,9 +31,8 @@ Overall Winrates, Position Winrates\
 Perks,...
 
 # Data visualization
-NodeJS, React\
-Cài dependencies: npm install
+Atlas Search, Charts, NodeJS, React\
+Cài dependencies: npm install\
 Backend: server.js - node server.js\
 Frontend: App.js - npm start\
-Embedded Atlas Search, Charts
 
