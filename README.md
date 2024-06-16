@@ -30,6 +30,6 @@ PySpark, Spark SQL
 
 
 # Data visualization
-React, NodeJS
+React, NodeJS\
 Embedded Atlas Search, Charts
 
