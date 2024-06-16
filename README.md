@@ -26,10 +26,14 @@ Topic: match_detail_yyyy_mm_dd
 
 
 # Data processing
-PySpark, Spark SQL
-
+PySpark, Spark SQL\
+Overall Winrates, Position Winrates\
+Perks,...
 
 # Data visualization
-React, NodeJS\
+NodeJS, React\
+Cài dependencies: npm install
+Backend: server.js - node server.js\
+Frontend: App.js - npm start\
 Embedded Atlas Search, Charts
 
