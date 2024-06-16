@@ -1,0 +1,27 @@
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    background-color: #686868;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1000;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    margin-right: 10px;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.active {
+    font-weight: bold;
+    color: rgb(254, 254, 254);
+}
