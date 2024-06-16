@@ -26,5 +26,10 @@ Topic: match_detail_yyyy_mm_dd
 
 
 # Data processing
-...
+PySpark, Spark SQL
+
+
+# Data visualization
+React, NodeJS
+Embedded Atlas Search, Charts
 
