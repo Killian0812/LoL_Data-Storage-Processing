@@ -1,6 +1,6 @@
 import datetime
 
-api_key = "RGAPI-5b7d29c2-083f-4e2e-90d8-749b24639d6e"
+api_key = ["RGAPI-a4de8789-5de1-4999-8869-7c4b378633c3","RGAPI-08578a31-1336-4d9a-88f6-3a3301cb9353"]
 now = datetime.datetime.now()
 current_day = now.day
 current_month = now.month

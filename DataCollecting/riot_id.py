@@ -37,7 +37,7 @@ def scrape_page(page_number):
             "div", id="content-container", class_="css-1mw8x2 esk32cx0"
         )
         table_container = content_container.find("div", class_="css-1v7j0iq e3xcvm52")
-        table = table_container.find("table", class_="css-1l95r9q e1nwpw1h11")
+        table = table_container.find("table", class_="css-1l95r9q e1kpg1m611")
         if table:
             rows = table.find("tbody").find_all("tr")
 
@@ -58,6 +58,7 @@ def scrape_page(page_number):
 for message in consumer:
     # Decode message từ binary thành chuỗi
     page_number = message.value.decode("utf-8")
+    print(page_number)
     scrape_page(page_number=page_number)
 
 consumer.close()

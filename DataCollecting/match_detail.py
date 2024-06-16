@@ -24,12 +24,13 @@ producerWithSerializer = KafkaProducer(
 )
 
 total = 0
+api_key_index = 0
 for message in consumer:
     match_ids = ast.literal_eval(message.value.decode("utf-8"))
     print(match_ids)
 
     for match_id in match_ids:
-        url = f"https://sea.api.riotgames.com/lol/match/v5/matches/{match_id}?api_key={api_key}"
+        url = f"https://sea.api.riotgames.com/lol/match/v5/matches/{match_id}?api_key={api_key[api_key_index]}"
         response = requests.get(url)
         if response.status_code == 200:
             match_detail = response.json()
@@ -41,6 +42,8 @@ for message in consumer:
             err_ids = [match_id]
             producer.send(f"match_id_{current_date}", f"{err_ids}".encode())
             print(f"Reproduced {match_id}")
+            if response.status_code == 429:
+                api_key_index = (api_key_index + 1) % 2
 
 producer.close()
 consumer.close()

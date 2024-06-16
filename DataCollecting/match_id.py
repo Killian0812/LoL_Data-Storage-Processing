@@ -19,10 +19,11 @@ consumer = KafkaConsumer(
 producer = KafkaProducer(bootstrap_servers="localhost:9092")
 
 total = 0
+api_key_index = 0
 for message in consumer:
     puuid = message.value.decode("utf-8")
 
-    url = f"https://sea.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=5&api_key={api_key}"
+    url = f"https://sea.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=5&api_key={api_key[api_key_index]}"
     response = requests.get(url)
     if response.status_code == 200:
         match_ids = response.json()
@@ -34,6 +35,8 @@ for message in consumer:
         print(f"Error with {puuid}: Status code {response.status_code}")
         producer.send(f"puuid_{current_date}", f"{puuid}".encode())
         print(f"Reproduced {puuid}")
+        if response.status_code == 429:
+            api_key_index = (api_key_index + 1) % 2
 
 producer.close()
 consumer.close()
